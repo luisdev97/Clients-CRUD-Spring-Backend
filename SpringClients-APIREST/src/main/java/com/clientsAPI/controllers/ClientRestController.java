@@ -12,7 +12,7 @@ import com.clientsAPI.models.services.IClientService;
 
 
 //Para un controlador de WEB MVC usariamos solo Controller para incluir las vistas
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:4200/clients" })
 @RestController
 @RequestMapping("/api")
 public class ClientRestController {
