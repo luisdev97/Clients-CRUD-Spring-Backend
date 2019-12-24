@@ -25,9 +25,18 @@ import javax.persistence.TemporalType;
 	
 	//Cuando el nombre del atributo se llama igual al nombre del campo se puede omitir el @Column()
 	
+	
+	@Column(nullable = false)
 	private String name;
+	
+	
+	@Column(nullable = false)
 	private String surname;
+	
+	
+	@Column(nullable = false, unique = true)
 	private String email;
+	
 	
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
