@@ -1,6 +1,5 @@
 package com.clientsAPI.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +9,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+ import org.springframework.web.bind.annotation.RestController;
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.services.IClientService;
 
@@ -33,8 +34,9 @@ import com.clientsAPI.models.services.IClientService;
 @RequestMapping("/api")
 public class ClientRestController {
 
+	
 	@Autowired
-	//En Spring cuando se declara un beans con su tipo generico ya sea interface o clase abstracta buscará como primer candidato una clase que implemente dicha interface
+ 	//En Spring cuando se declara un beans con su tipo generico ya sea interface o clase abstracta buscará como primer candidato una clase que implemente dicha interface
 	//El bean ClientServiceImpl es un tipo generico de la interface, si hubiera mas de una implementacion habia que usar un calificador en autowired
 	private IClientService clientService;
 		
@@ -42,6 +44,13 @@ public class ClientRestController {
 	@GetMapping("/clients")
 	public List<Client> index(){
 		return clientService.findAll();
+	}
+	
+	
+	@GetMapping("/clients/page/{page}")
+	public Page<Client> index(@PathVariable Integer page){
+		Pageable pageable = PageRequest.of(page, 8); 
+		return clientService.findAll(pageable);
 	}
 	
 	
@@ -94,7 +103,7 @@ public class ClientRestController {
 			response.put("preciseMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+		 
 		response.put("message", "The client was saved successfully");
 		response.put("client", newClient);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
@@ -131,7 +140,7 @@ public class ClientRestController {
 				currentClient.setEmail(client.getEmail()) ;
 				
 				modifiedClient = clientService.save(currentClient);
-			}
+			} 
 			
 			
 			response.put("message", "The client was modified successfully");

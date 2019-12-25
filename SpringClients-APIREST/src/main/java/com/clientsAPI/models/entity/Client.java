@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
  @Table(name="clients")
  public class Client implements Serializable{
 	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -30,15 +31,15 @@ import javax.validation.constraints.Size;
 	
 	
 	@Column(nullable = false)
-	@NotEmpty
+	@NotEmpty(message = "it can't be empty")
 	@Size(min = 4 , max = 20)
 	private String name;
 	
-	@NotEmpty
+	@NotEmpty(message = "it can't be empty")
 	@Column(nullable = false)
 	private String surname;
 	
-	@NotEmpty
+	@NotEmpty(message = "it can't be empty")
 	@Email
 	@Column(nullable = false, unique = true)
 	private String email;
