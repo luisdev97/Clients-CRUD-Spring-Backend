@@ -1,14 +1,19 @@
 package com.clientsAPI.controllers;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.services.IClientService;
@@ -67,9 +71,21 @@ public class ClientRestController {
 	
 	
 	@PostMapping("/clients")
-	public ResponseEntity<?> create(@RequestBody Client client) {
+	public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
 		Client newClient = null;
-		Map<String, Object> response = new HashMap<>();
+		Map<String, Object> response = new HashMap<>();  
+		
+		if(result.hasErrors()) {
+			
+			List<String> errors = result.getFieldErrors()
+								  .stream()
+								  .map(err -> "The field '" + err.getField() + "' " + err.getDefaultMessage())
+								  .collect(Collectors.toList());
+						
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+
+		}
 		
 		try {
 			newClient = clientService.save(client);
@@ -88,9 +104,21 @@ public class ClientRestController {
 	
 
 	@PutMapping("/clients/{id}")
-	public ResponseEntity<?> update(@RequestBody Client client, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id)  {
 		
 		Map <String, Object> response = new HashMap<>();
+		
+		if(result.hasErrors()) {
+			
+			List<String> errors = result.getFieldErrors()
+								  .stream()
+								  .map(err -> "The field '" + err.getField() + "' " + err.getDefaultMessage())
+								  .collect(Collectors.toList());
+						
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+
+		}
 		
 		try {
 			
@@ -110,7 +138,7 @@ public class ClientRestController {
 			response.put("client", modifiedClient);
  
 		}catch(DataAccessException e) {
-			response.put("message", "Error modifying client with ID" + id);
+			response.put("message", "Error modifying client with ID " + id);
 			response.put("preciseMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
