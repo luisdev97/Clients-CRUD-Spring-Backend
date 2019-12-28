@@ -1,5 +1,6 @@
 package com.clientsAPI.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -173,6 +174,15 @@ public class ClientRestController {
 		Map <String, Object> response = new HashMap<>();
 		
 		try {
+			Client client = clientService.findById(id);
+
+			String previousImageName = client.getImg();
+			if(previousImageName != null && previousImageName.length() > 0) {
+				Path previousImagePath = Paths.get("uploads").resolve(previousImageName).toAbsolutePath();
+				File previousFile = previousImagePath.toFile();
+				if(previousFile.exists() && previousFile.canRead())
+					previousFile.delete();
+			}
 			clientService.delete(id);
 		}catch(DataAccessException e) {
 			response.put("message", "Error removing client with ID " + id);
@@ -202,6 +212,14 @@ public class ClientRestController {
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
+			String previousImageName = client.getImg();
+			if(previousImageName != null && previousImageName.length() > 0) {
+				Path previousImagePath = Paths.get("uploads").resolve(previousImageName).toAbsolutePath();
+				File previousFile = previousImagePath.toFile();
+				if(previousFile.exists() && previousFile.canRead())
+					previousFile.delete();
+			}
+				
 			client.setImg(fileName);
 			clientService.save(client);
 			response.put("client", client);
