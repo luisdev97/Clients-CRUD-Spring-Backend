@@ -1,8 +1,13 @@
 package com.clientsAPI.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -23,7 +28,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
- import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.services.IClientService;
 
@@ -173,6 +181,35 @@ public class ClientRestController {
 		}
 		response.put("message", "The client was removed successfully");
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+	}
+	
+	@PostMapping("clients/upload")
+	public ResponseEntity<?> upload(@RequestParam("file")MultipartFile file, @RequestParam("id")Long id ){
+		Map <String, Object> response = new HashMap<>();
+		
+		Client client = clientService.findById(id);
+		
+		if(!file.isEmpty()) {
+			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ","");
+			Path pathFile = Paths.get("uploads").resolve(fileName).toAbsolutePath();
+					
+			try {
+				//Si todo sale bien copy mueve el archivo subido al servidor a la ruta elegida
+				Files.copy(file.getInputStream(), pathFile);
+			} catch (IOException e) {
+				response.put("message", "Error uploading the image " + fileName);
+				response.put("error", e.getMessage() + ": " + e.getCause().getMessage());
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			client.setImg(fileName);
+			clientService.save(client);
+			response.put("client", client);
+			response.put("message", "Image uploaded successfully -> " + fileName);
+		}
+
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+		
 	}
 	
 }

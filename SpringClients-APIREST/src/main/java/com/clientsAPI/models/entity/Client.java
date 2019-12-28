@@ -51,6 +51,9 @@ import javax.validation.constraints.Size;
 	private Date createAt;
 	
 	
+	private String img;
+	
+	
 	/*@PrePersist
 	public void prePersist() {
 		createAt = new Date();
@@ -96,6 +99,13 @@ import javax.validation.constraints.Size;
 		this.createAt = createAt;
 	}
 	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 	/**
 	 * 
 	 */
