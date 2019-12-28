@@ -49,7 +49,7 @@ public class ClientRestController {
 	
 	@GetMapping("/clients/page/{page}")
 	public Page<Client> index(@PathVariable Integer page){
-		Pageable pageable = PageRequest.of(page, 8); 
+		Pageable pageable = PageRequest.of(page, 2); 
 		return clientService.findAll(pageable);
 	}
 	
@@ -138,6 +138,7 @@ public class ClientRestController {
 				currentClient.setSurname(client.getSurname());
 				currentClient.setName(client.getName());
 				currentClient.setEmail(client.getEmail()) ;
+				currentClient.setCreateAt(client.getCreateAt());
 				
 				modifiedClient = clientService.save(currentClient);
 			} 

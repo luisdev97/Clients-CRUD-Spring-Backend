@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 	
 
@@ -44,15 +45,17 @@ import javax.validation.constraints.Size;
 	@Column(nullable = false, unique = true)
 	private String email;
 	
-	
+	@NotNull(message = "it can't be empty")
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	
-	@PrePersist
+	
+	/*@PrePersist
 	public void prePersist() {
 		createAt = new Date();
-	}
+	}*/
+	
 	public Long getId() {
 		return id;
 	}

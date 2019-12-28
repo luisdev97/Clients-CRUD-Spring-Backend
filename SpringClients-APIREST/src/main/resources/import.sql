@@ -12,3 +12,9 @@ INSERT INTO clients (name, surname, email, create_at) VALUES('Magma', 'Lee', 'ma
 INSERT INTO clients (name, surname, email, create_at) VALUES('Tornado', 'Roe', 'tornado.roe@gmail.com', '2018-03-05');
 INSERT INTO clients (name, surname, email, create_at) VALUES('Luis David', 'Amador', 'luisdapolixe@gmail.com', '2018-03-06');
 
+INSERT INTO clients (name, surname, email, create_at) VALUES('Dr. James2', 'Gosling', 'james.gosling2@gmail.com', '2018-03-03');
+INSERT INTO clients (name, surname, email, create_at) VALUES('Magma2', 'Lee', 'magma.lee2@gmail.com', '2018-03-04');
+INSERT INTO clients (name, surname, email, create_at) VALUES('Tornado2', 'Roe', 'tornado.roe2@gmail.com', '2018-03-05');
+INSERT INTO clients (name, surname, email, create_at) VALUES('Luis David2', 'Amador', 'luisdapolixe2@gmail.com', '2018-03-06');
+
+
