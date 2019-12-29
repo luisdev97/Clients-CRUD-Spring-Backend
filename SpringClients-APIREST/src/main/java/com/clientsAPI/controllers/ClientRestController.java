@@ -2,6 +2,7 @@ package com.clientsAPI.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,10 +15,13 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -201,11 +205,11 @@ public class ClientRestController {
 		
 		if(!file.isEmpty()) {
 			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ","");
-			Path pathFile = Paths.get("uploads").resolve(fileName).toAbsolutePath();
+			Path filePath = Paths.get("uploads").resolve(fileName).toAbsolutePath();
 					
 			try {
 				//Si todo sale bien copy mueve el archivo subido al servidor a la ruta elegida
-				Files.copy(file.getInputStream(), pathFile);
+				Files.copy(file.getInputStream(), filePath);
 			} catch (IOException e) {
 				response.put("message", "Error uploading the image " + fileName);
 				response.put("error", e.getMessage() + ": " + e.getCause().getMessage());
@@ -228,6 +232,27 @@ public class ClientRestController {
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 		
+	}
+	
+	@GetMapping("/uploads/img/{imageName:.+}")
+	public ResponseEntity<Resource> showImg(@PathVariable String imageName){
+		
+		Path filePath = Paths.get("uploads").resolve(imageName).toAbsolutePath();
+		Resource resource = null;
+		
+		try {
+			resource = new UrlResource(filePath.toUri());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		if(!resource.exists() && !resource.isReadable()) {
+			throw new RuntimeException("Error: Couldn't load image -> " + imageName);
+		}
+	
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
 	}
 	
 }
