@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -52,7 +54,8 @@ public class ClientRestController {
  	//En Spring cuando se declara un beans con su tipo generico ya sea interface o clase abstracta buscará como primer candidato una clase que implemente dicha interface
 	//El bean ClientServiceImpl es un tipo generico de la interface, si hubiera mas de una implementacion habia que usar un calificador en autowired
 	private IClientService clientService;
-		
+	
+	private final Logger log = LoggerFactory.getLogger(ClientRestController.class);
 	
 	@GetMapping("/clients")
 	public List<Client> index(){
@@ -206,7 +209,9 @@ public class ClientRestController {
 		if(!file.isEmpty()) {
 			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ","");
 			Path filePath = Paths.get("uploads").resolve(fileName).toAbsolutePath();
-					
+			log.info(filePath.toString());
+	
+			
 			try {
 				//Si todo sale bien copy mueve el archivo subido al servidor a la ruta elegida
 				Files.copy(file.getInputStream(), filePath);
@@ -238,6 +243,7 @@ public class ClientRestController {
 	public ResponseEntity<Resource> showImg(@PathVariable String imageName){
 		
 		Path filePath = Paths.get("uploads").resolve(imageName).toAbsolutePath();
+		log.info(filePath.toString());
 		Resource resource = null;
 		
 		try {
