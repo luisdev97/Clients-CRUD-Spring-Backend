@@ -1,24 +1,17 @@
 package com.clientsAPI.controllers;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,22 +34,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.services.IClientService;
+import com.clientsAPI.models.services.IUploadFileService;
 
 
 //Para un controlador de WEB MVC usariamos solo Controller para incluir las vistas
-@CrossOrigin(origins = { "http://localhost:4200/clients", "http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200/clients", "http://localhost:4200", "http://localhost:4200/clientes"})
 @RestController
 @RequestMapping("/api")
 public class ClientRestController {
 
-	
+
 	@Autowired
  	//En Spring cuando se declara un beans con su tipo generico ya sea interface o clase abstracta buscará como primer candidato una clase que implemente dicha interface
 	//El bean ClientServiceImpl es un tipo generico de la interface, si hubiera mas de una implementacion habia que usar un calificador en autowired
 	private IClientService clientService;
 	
-	private final Logger log = LoggerFactory.getLogger(ClientRestController.class);
+	 @Autowired
+	 IUploadFileService uploadService;
 	
+ 	
 	@GetMapping("/clients")
 	public List<Client> index(){
 		return clientService.findAll();
@@ -182,14 +178,9 @@ public class ClientRestController {
 		
 		try {
 			Client client = clientService.findById(id);
-
 			String previousImageName = client.getImg();
-			if(previousImageName != null && previousImageName.length() > 0) {
-				Path previousImagePath = Paths.get("uploads").resolve(previousImageName).toAbsolutePath();
-				File previousFile = previousImagePath.toFile();
-				if(previousFile.exists() && previousFile.canRead())
-					previousFile.delete();
-			}
+			uploadService.remove(previousImageName);
+			
 			clientService.delete(id);
 		}catch(DataAccessException e) {
 			response.put("message", "Error removing client with ID " + id);
@@ -200,6 +191,7 @@ public class ClientRestController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
+	
 	@PostMapping("clients/upload")
 	public ResponseEntity<?> upload(@RequestParam("file")MultipartFile file, @RequestParam("id")Long id ){
 		Map <String, Object> response = new HashMap<>();
@@ -207,27 +199,20 @@ public class ClientRestController {
 		Client client = clientService.findById(id);
 		
 		if(!file.isEmpty()) {
-			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ","");
-			Path filePath = Paths.get("uploads").resolve(fileName).toAbsolutePath();
-			log.info(filePath.toString());
-	
 			
+			String fileName = null;
+		
 			try {
-				//Si todo sale bien copy mueve el archivo subido al servidor a la ruta elegida
-				Files.copy(file.getInputStream(), filePath);
+				fileName = uploadService.copy(file);
 			} catch (IOException e) {
-				response.put("message", "Error uploading the image " + fileName);
+				response.put("message", "Error uploading the image ");
 				response.put("error", e.getMessage() + ": " + e.getCause().getMessage());
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
 			String previousImageName = client.getImg();
-			if(previousImageName != null && previousImageName.length() > 0) {
-				Path previousImagePath = Paths.get("uploads").resolve(previousImageName).toAbsolutePath();
-				File previousFile = previousImagePath.toFile();
-				if(previousFile.exists() && previousFile.canRead())
-					previousFile.delete();
-			}
+			
+			uploadService.remove(previousImageName);
 				
 			client.setImg(fileName);
 			clientService.save(client);
@@ -242,18 +227,12 @@ public class ClientRestController {
 	@GetMapping("/uploads/img/{imageName:.+}")
 	public ResponseEntity<Resource> showImg(@PathVariable String imageName){
 		
-		Path filePath = Paths.get("uploads").resolve(imageName).toAbsolutePath();
-		log.info(filePath.toString());
 		Resource resource = null;
-		
+	
 		try {
-			resource = new UrlResource(filePath.toUri());
+			resource = uploadService.load(imageName);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		}
-		
-		if(!resource.exists() && !resource.isReadable()) {
-			throw new RuntimeException("Error: Couldn't load image -> " + imageName);
 		}
 	
 		HttpHeaders headers = new HttpHeaders();
