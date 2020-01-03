@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,49 +18,53 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-	
 
- //Cuando la clase se llama igual que la tabla de la base de datos no es necesaria la notacion @Table
- @Entity
- @Table(name="clients")
- public class Client implements Serializable{
-	
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+//Cuando la clase se llama igual que la tabla de la base de datos no es necesaria la notacion @Table
+@Entity
+@Table(name = "clients")
+public class Client implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	//Cuando el nombre del atributo se llama igual al nombre del campo se puede omitir el @Column()
-	
-	
+
+	// Cuando el nombre del atributo se llama igual al nombre del campo se puede
+	// omitir el @Column()
+
 	@Column(nullable = false)
 	@NotEmpty(message = "it can't be empty")
-	@Size(min = 4 , max = 20)
+	@Size(min = 4, max = 20)
 	private String name;
-	
+
 	@NotEmpty(message = "it can't be empty")
 	@Column(nullable = false)
 	private String surname;
-	
+
 	@NotEmpty(message = "it can't be empty")
 	@Email
 	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 	@NotNull(message = "it can't be empty")
-	@Column(name="create_at")
+	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
-	
+
 	private String img;
-	
-	
-	/*@PrePersist
-	public void prePersist() {
-		createAt = new Date();
-	}*/
-	
+
+		
+	//Con la carga perezosa, cada vez que invoquemos el atributo mediante el getter se realizará la carga
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "region_id")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Region region;
+
+	/*
+	 * @PrePersist public void prePersist() { createAt = new Date(); }
+	 */
+
 	public Long getId() {
 		return id;
 	}
@@ -97,7 +104,7 @@ import javax.validation.constraints.Size;
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
+
 	public String getImg() {
 		return img;
 	}
@@ -105,8 +112,14 @@ import javax.validation.constraints.Size;
 	public void setImg(String img) {
 		this.img = img;
 	}
-	/**
-	 * 
-	 */
+
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
 	private static final long serialVersionUID = 1L;
 }
