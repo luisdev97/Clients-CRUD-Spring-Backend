@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.clientsAPI.models.entity.Client;
+import com.clientsAPI.models.entity.Region;
 
 //Interface para definir el contrato en el que marco que métodos usará mi servicio, CRUD Methods
 public interface IClientService {
@@ -20,5 +21,7 @@ public interface IClientService {
 	public Client save(Client client);
 	
 	public void delete(Long id);
+	
+	public List<Region> findAllRegions();
 	
 }

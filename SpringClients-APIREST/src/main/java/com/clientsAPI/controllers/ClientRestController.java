@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.clientsAPI.models.entity.Client;
+import com.clientsAPI.models.entity.Region;
 import com.clientsAPI.models.services.IClientService;
 import com.clientsAPI.models.services.IUploadFileService;
 
@@ -151,6 +152,7 @@ public class ClientRestController {
 				currentClient.setName(client.getName());
 				currentClient.setEmail(client.getEmail()) ;
 				currentClient.setCreateAt(client.getCreateAt());
+				currentClient.setRegion(client.getRegion());
 				
 				modifiedClient = clientService.save(currentClient);
 			} 
@@ -239,6 +241,13 @@ public class ClientRestController {
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
 		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("/clients/regions")
+	public List<Region> getRegions(){
+		return clientService.findAllRegions();
+	}
+	
 	
 }
  

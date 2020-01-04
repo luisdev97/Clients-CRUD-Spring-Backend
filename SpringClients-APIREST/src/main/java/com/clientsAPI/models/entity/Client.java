@@ -56,6 +56,7 @@ public class Client implements Serializable {
 
 		
 	//Con la carga perezosa, cada vez que invoquemos el atributo mediante el getter se realizará la carga
+	@NotNull(message = "it can't be empty")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "region_id")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
