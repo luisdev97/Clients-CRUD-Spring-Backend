@@ -17,7 +17,7 @@ public class Role implements Serializable {
 	private Long id;
 
 	@Column(unique = true, length = 20)
-	private String rolename;
+	private String roleName;
 
 
 	public Long getId() {
@@ -29,11 +29,11 @@ public class Role implements Serializable {
 	}
 
 	public String getRolename() {
-		return rolename;
+		return roleName;
 	}
 
 	public void setRolename(String rolename) {
-		this.rolename = rolename;
+		this.roleName = rolename;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -25,7 +25,7 @@ public class User implements Serializable {
 	private Long id;
 
 	@Column(unique = true, length = 20)
-	private String username;
+	private String userName;
 
 	@Column(length = 60)
 	private String password;
@@ -48,11 +48,11 @@ public class User implements Serializable {
 	}
 
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 
 	public String getPassword() {
