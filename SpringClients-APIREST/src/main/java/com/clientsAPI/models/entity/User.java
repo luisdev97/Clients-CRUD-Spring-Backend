@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
