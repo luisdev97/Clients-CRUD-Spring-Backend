@@ -1,5 +1,14 @@
 /* Populate table clients */
 
+INSERT INTO users (user_name, password, enabled) VALUES ('andres', '$2a$10$/KYyxw9MZZ7KGmEqoNWHb.9qkTrj/7tLIa1BNoBNyaFa/KevuMfUe', 1);
+INSERT INTO users (user_name, password, enabled) VALUES ('paco', '$2a$10$YrQSVENFt/oR2Am9DM9eZOdLcB2W.RuGZ63tx3T6DcokwIQXWR/.6', 1);
+
+INSERT INTO roles (role_name) VALUES ('ROLE_USER');
+INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN');
+
+INSERT INTO users_roles (user_id, role_id) VALUES(1, 1);
+INSERT INTO users_roles (user_id, role_id) VALUES(2, 2);
+INSERT INTO users_roles (user_id, role_id) VALUES(2, 1);
 
 INSERT INTO regions (id, name) VALUES(1,'Europe');
 INSERT INTO regions (id, name) VALUES(2,'Asia');

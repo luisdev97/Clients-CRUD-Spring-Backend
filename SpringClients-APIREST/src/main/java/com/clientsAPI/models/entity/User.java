@@ -32,11 +32,11 @@ public class User implements Serializable {
 	@Column(length = 60)
 	private String password;
 
-	private Boolean enable;
+	private Boolean enabled;
 
 	// CascadeType.ALL borrara cada registro en la tabla M:N que se relacione con este usuario
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "users_authorities", joinColumns = @JoinColumn(name = "user_id"), 
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns= @JoinColumn(name = "role_id"),
 	uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"} )})
 	private List<Role> roles;
@@ -65,12 +65,12 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public Boolean getEnable() {
-		return enable;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setEnable(Boolean enable) {
-		this.enable = enable;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public List<Role> getRoles() {

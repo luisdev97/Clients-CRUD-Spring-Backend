@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
 				.collect(Collectors.toList());
 		
 				
-		return new User(user.getUsername(), user.getPassword(), user.getEnable(), true, true, true, authorities );
+		return new User(user.getUsername(), user.getPassword(), user.getEnabled(), true, true, true, authorities );
 	}
 
 }
