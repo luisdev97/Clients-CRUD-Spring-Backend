@@ -63,7 +63,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public JwtAccessTokenConverter accessTokenConverter() {
 		@SuppressWarnings("deprecation")
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-		jwtAccessTokenConverter.setSigningKey(JwtConfig.SECRET_KEY);
+		//La llave privada es la que firma el token
+		jwtAccessTokenConverter.setSigningKey(JwtConfig.RSA_PRIVATE);
+		//La llave publica es la que verifica que nuestro token sea auténtico
+		jwtAccessTokenConverter.setVerifierKey(JwtConfig.RSA_PUBLIC);
 		return jwtAccessTokenConverter;
 	}
 	
