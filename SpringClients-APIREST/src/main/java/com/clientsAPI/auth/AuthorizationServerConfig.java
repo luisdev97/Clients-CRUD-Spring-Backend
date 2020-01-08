@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -25,12 +26,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Qualifier("authenticationManager") //Qualifier nos permite inyectar una instancia especifica del tipo AuthenticationManager por si hemos creado varias
 	private AuthenticationManager authenticationManager;
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+	public void configure(@SuppressWarnings("deprecation") AuthorizationServerSecurityConfigurer security) throws Exception {
 		security.tokenKeyAccess("permitAll()")
 		.checkTokenAccess("isAuthenticated");
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("angularapp")
@@ -41,6 +44,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.refreshTokenValiditySeconds(3600);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.authenticationManager(authenticationManager)
@@ -48,14 +52,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.tokenStore(tokenStore());
 	}
 
-	@Bean
+	@SuppressWarnings("deprecation")
+	@Bean 
 	public JwtTokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
+		@SuppressWarnings("deprecation")
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+		jwtAccessTokenConverter.setSigningKey(JwtConfig.SECRET_KEY);
 		return jwtAccessTokenConverter;
 	}
 	
