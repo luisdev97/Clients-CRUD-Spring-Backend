@@ -18,13 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class UserService implements UserDetailsService { 
+public class UserService implements UserDetailsService, IUserService { 
 	
 	private Logger log = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	private IUserDAO userDAO;
-
+ 
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,6 +45,11 @@ public class UserService implements UserDetailsService {
 		
 				
 		return new User(user.getUsername(), user.getPassword(), user.getEnabled(), true, true, true, authorities );
+	}
+
+	@Override
+	public com.clientsAPI.models.entity.User findByUserName(String username) {
+		return userDAO.findByUserName(username);
 	}
 
 }
