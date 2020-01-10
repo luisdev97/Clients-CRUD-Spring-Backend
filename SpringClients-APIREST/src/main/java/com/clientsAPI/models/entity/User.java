@@ -31,6 +31,13 @@ public class User implements Serializable {
 	private String password;
 
 	private Boolean enabled;
+	
+	private String name; 
+	
+	private String surname;
+	
+	@Column(unique = true)
+	private String email;
 
 	// CascadeType.ALL borrara cada registro en la tabla M:N que se relacione con este usuario
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -78,6 +85,41 @@ public class User implements Serializable {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 
 	private static final long serialVersionUID = 1L;
 }

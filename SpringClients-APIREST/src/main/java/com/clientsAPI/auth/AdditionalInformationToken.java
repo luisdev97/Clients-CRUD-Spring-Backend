@@ -28,7 +28,10 @@ public class AdditionalInformationToken implements TokenEnhancer{
 		
 		Map<String, Object> info = new HashMap<>();
 		//Podemos obtener username directamente de authentication con getUserName()
-		info.put("additionalInfo", "Hello" + user.getUsername());
+		info.put("name", user.getName());
+		info.put("surname", user.getSurname());
+		info.put("email", user.getEmail());
+		
 		//La interfaz OAuth2AccessToken no tiene el metodo set por lo que los accedemos a través de la implementación concreta
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
 		return accessToken;

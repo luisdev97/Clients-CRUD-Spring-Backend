@@ -1,7 +1,7 @@
 /* Populate table clients */
 
-INSERT INTO users (user_name, password, enabled) VALUES ('andres', '$2a$10$/KYyxw9MZZ7KGmEqoNWHb.9qkTrj/7tLIa1BNoBNyaFa/KevuMfUe', 1);
-INSERT INTO users (user_name, password, enabled) VALUES ('paco', '$2a$10$YrQSVENFt/oR2Am9DM9eZOdLcB2W.RuGZ63tx3T6DcokwIQXWR/.6', 1);
+INSERT INTO users (user_name, password, enabled, name, surname, email) VALUES ('andres', '$2a$10$/KYyxw9MZZ7KGmEqoNWHb.9qkTrj/7tLIa1BNoBNyaFa/KevuMfUe', 1, 'Andres', 'Flores', 'takitaki@yahoo.com');
+INSERT INTO users (user_name, password, enabled, name, surname, email) VALUES ('paco', '$2a$10$YrQSVENFt/oR2Am9DM9eZOdLcB2W.RuGZ63tx3T6DcokwIQXWR/.6', 1, 'Paco', 'Méndez', 'pacoFiesta@hotmail.es');
 
 INSERT INTO roles (role_name) VALUES ('ROLE_USER');
 INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN');

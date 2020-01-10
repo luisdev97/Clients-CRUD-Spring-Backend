@@ -29,6 +29,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Qualifier("authenticationManager") //Qualifier nos permite inyectar una instancia especifica del tipo AuthenticationManager por si hemos creado varias
 	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private AdditionalInformationToken additionalInfoToken;
+	
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void configure(@SuppressWarnings("deprecation") AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -52,11 +56,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		
 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-		tokenEnhancerChain.setTokenEnhancers(Arrays.asList());
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(additionalInfoToken, accessTokenConverter() ));
 		
 		endpoints.authenticationManager(authenticationManager)
 		.accessTokenConverter(accessTokenConverter())
-		.tokenStore(tokenStore());
+		.tokenStore(tokenStore())
+		.tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@SuppressWarnings("deprecation")
