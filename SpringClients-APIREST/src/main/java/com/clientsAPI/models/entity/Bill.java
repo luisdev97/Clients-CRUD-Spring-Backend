@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -96,6 +97,10 @@ public class Bill implements Serializable {
 
 	public void setItems(List<ItemBill> items) {
 		this.items = items;
+	}
+	
+	public Double getTotal() {
+		return items.stream().mapToDouble(it -> it.getAmount()).sum();
 	}
 
 	private static final long serialVersionUID = 1L;
