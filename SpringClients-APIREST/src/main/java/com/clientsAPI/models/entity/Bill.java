@@ -17,10 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity()
+@Table(name = "bills")
 public class Bill implements Serializable {
 
 	@Id
@@ -35,11 +39,13 @@ public class Bill implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 
+	@JsonIgnoreProperties({ "bills", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "bill_id")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
 	private List<ItemBill> items;
 
 	public Bill() {

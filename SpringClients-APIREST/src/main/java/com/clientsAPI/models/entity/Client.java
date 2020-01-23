@@ -63,9 +63,10 @@ public class Client implements Serializable {
 	@NotNull(message = "it can't be empty")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "region_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Region region;
 
+	@JsonIgnoreProperties({ "client", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="client", cascade = CascadeType.ALL)
 	private List<Bill> bills;
 	

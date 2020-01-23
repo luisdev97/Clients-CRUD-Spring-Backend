@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
@@ -24,6 +25,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/api/clients", "/api/clients/page/**", "api/uploads/img/**", "/img/**", "/oauth/token'").permitAll()
+		.antMatchers("/api/clients/{id}").permitAll()
+		.antMatchers("/api/bills/**").permitAll()
 		/*.antMatchers(HttpMethod.GET, "/api/clients/{id}").hasAnyRole("USER", "ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clients/upload").hasAnyRole("USER", "ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clients").hasRole("ADMIN")

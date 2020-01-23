@@ -36,3 +36,25 @@ INSERT INTO clients (region_id, name, surname, email, create_at) VALUES(3, 'Torn
 INSERT INTO clients (region_id, name, surname, email, create_at) VALUES(1, 'Luis David2', 'Amador', 'luisdapolixe2@gmail.com', '2018-03-06');
 
 
+/* Populate tabla products */
+INSERT INTO products (name, price, create_at) VALUES('Panasonic Pantalla LCD', 259990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Sony Camara digital DSC-W320B', 123490, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Apple iPod shuffle', 1499990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Sony Notebook Z110', 37990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Hewlett Packard Multifuncional F2280', 69990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Bianchi Bicicleta Aro 26', 69990, NOW());
+INSERT INTO products (name, price, create_at) VALUES('Mica Comoda 5 Cajones', 299990, NOW());
+
+
+INSERT INTO bills (description, observation, client_id, create_at) VALUES('Factura Bicicleta', 'Alguna nota importante!', 1, NOW());
+INSERT INTO bills (description, observation, client_id, create_at) VALUES('Factura equipos de oficina', null, 1, NOW());
+
+
+INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 1);
+INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(2, 1, 4);
+INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 5);
+INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 7);
+INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(3, 2, 6);
+
+
+

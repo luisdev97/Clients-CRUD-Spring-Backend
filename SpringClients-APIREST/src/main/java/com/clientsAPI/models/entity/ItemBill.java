@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "bill_items")
 public class ItemBill implements Serializable {
@@ -18,6 +20,7 @@ public class ItemBill implements Serializable {
 	private Long id;
 	private Integer cantity;
 	
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"}) 
 	@ManyToOne(fetch= FetchType.LAZY)
 	private Product product;
 

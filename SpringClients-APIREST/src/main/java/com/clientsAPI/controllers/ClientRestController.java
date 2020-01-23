@@ -68,7 +68,7 @@ public class ClientRestController {
 	}
 	
 	
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	//@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/clients/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
