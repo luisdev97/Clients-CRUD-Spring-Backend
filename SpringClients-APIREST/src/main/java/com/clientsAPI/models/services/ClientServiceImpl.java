@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.clientsAPI.models.dao.IBillDAO;
 import com.clientsAPI.models.dao.IClientDAO;
+import com.clientsAPI.models.entity.Bill;
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.entity.Region;
 
@@ -18,6 +20,9 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Autowired
 	private IClientDAO clientDAO;
+	
+	@Autowired
+	private IBillDAO billDAO;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -42,14 +47,14 @@ public class ClientServiceImpl implements IClientService {
 	
 
 	@Override
-	@Transactional()
+	@Transactional
 	public Client save(Client client) {
 		//Return the saved entity
 		return clientDAO.save(client);
 	}
 
 	@Override
-	@Transactional()
+	@Transactional
 	public void delete(Long id) {
 		clientDAO.deleteById(id);
 	}
@@ -59,6 +64,27 @@ public class ClientServiceImpl implements IClientService {
 	@Transactional(readOnly = true)
 	public List<Region> findAllRegions() {
 		return clientDAO.findAllRegions();
+	}
+
+
+	@Override
+	@Transactional(readOnly = true)
+	public Bill findBillById(Long id) {	
+		return billDAO.findById(id).orElse(null);
+	}
+
+
+	@Override
+	@Transactional
+	public Bill saveBill(Bill bill) {
+		return billDAO.save(bill);
+	}
+
+
+	@Override
+	@Transactional
+	public void deleteBill(Long id) {
+		billDAO.deleteById(id);
 	}
 	
 	

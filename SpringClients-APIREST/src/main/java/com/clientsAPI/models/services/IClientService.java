@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.clientsAPI.models.entity.Bill;
 import com.clientsAPI.models.entity.Client;
 import com.clientsAPI.models.entity.Region;
 
@@ -23,5 +24,13 @@ public interface IClientService {
 	public void delete(Long id);
 	
 	public List<Region> findAllRegions();
+	
+	public Bill findBillById(Long id);
+	
+	public Bill saveBill(Bill bill);
+	
+	public void deleteBill(Long id);
+	
+	//Implementamos las operaciones CRUD del DAO de facturas ya que un service es un DAO manager, puede tener varios atributos de distintos DAO si están relacionados
 	
 }
