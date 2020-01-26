@@ -83,7 +83,7 @@ public class ClientServiceImpl implements IClientService {
 
 	@Override
 	@Transactional
-	public void deleteBill(Long id) {
+	public void deleteBillById(Long id) {
 		billDAO.deleteById(id);
 	}
 	

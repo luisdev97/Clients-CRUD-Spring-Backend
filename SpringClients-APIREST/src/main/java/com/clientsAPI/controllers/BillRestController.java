@@ -3,6 +3,7 @@ package com.clientsAPI.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,12 @@ public class BillRestController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public Bill show(@PathVariable Long id) {
 		return clientService.findBillById(id);
+	}
+	
+	@DeleteMapping("/bills/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable Long id) {
+		clientService.deleteBillById(id);
 	}
 	
 }

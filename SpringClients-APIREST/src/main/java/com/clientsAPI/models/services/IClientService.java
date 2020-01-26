@@ -29,7 +29,7 @@ public interface IClientService {
 	
 	public Bill saveBill(Bill bill);
 	
-	public void deleteBill(Long id);
+	public void deleteBillById(Long id);
 	
 	//Implementamos las operaciones CRUD del DAO de facturas ya que un service es un DAO manager, puede tener varios atributos de distintos DAO si están relacionados
 	
