@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.clientsAPI.models.entity.Bill;
 import com.clientsAPI.models.entity.Client;
+import com.clientsAPI.models.entity.Product;
 import com.clientsAPI.models.entity.Region;
 
 //Interface para definir el contrato en el que marco que métodos usará mi servicio, CRUD Methods
@@ -30,6 +31,9 @@ public interface IClientService {
 	public Bill saveBill(Bill bill);
 	
 	public void deleteBillById(Long id);
+	
+	public List<Product> findProductByName(String name);
+	
 	
 	//Implementamos las operaciones CRUD del DAO de facturas ya que un service es un DAO manager, puede tener varios atributos de distintos DAO si están relacionados
 	

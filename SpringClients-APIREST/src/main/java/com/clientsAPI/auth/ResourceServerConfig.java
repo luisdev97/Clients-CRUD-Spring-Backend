@@ -27,6 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/api/clients", "/api/clients/page/**", "api/uploads/img/**", "/img/**", "/oauth/token'").permitAll()
 		.antMatchers("/api/clients/{id}").permitAll()
 		.antMatchers("/api/bills/**").permitAll()
+		//.antMatchers("/api/bills/filter-products/**").permitAll()
 		/*.antMatchers(HttpMethod.GET, "/api/clients/{id}").hasAnyRole("USER", "ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clients/upload").hasAnyRole("USER", "ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clients").hasRole("ADMIN")

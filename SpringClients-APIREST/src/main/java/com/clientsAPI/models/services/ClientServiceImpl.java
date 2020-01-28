@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.clientsAPI.models.dao.IBillDAO;
 import com.clientsAPI.models.dao.IClientDAO;
+import com.clientsAPI.models.dao.IProductDAO;
 import com.clientsAPI.models.entity.Bill;
 import com.clientsAPI.models.entity.Client;
+import com.clientsAPI.models.entity.Product;
 import com.clientsAPI.models.entity.Region;
 
 @Service
@@ -23,6 +25,9 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Autowired
 	private IBillDAO billDAO;
+	
+	@Autowired
+	private IProductDAO productDAO;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -85,6 +90,13 @@ public class ClientServiceImpl implements IClientService {
 	@Transactional
 	public void deleteBillById(Long id) {
 		billDAO.deleteById(id);
+	}
+
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Product> findProductByName(String name) {
+		return productDAO.findByNameStartingWithIgnoreCase(name);
 	}
 	
 	
