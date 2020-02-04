@@ -50,11 +50,11 @@ INSERT INTO bills (description, observation, client_id, create_at) VALUES('Factu
 INSERT INTO bills (description, observation, client_id, create_at) VALUES('Factura equipos de oficina', null, 1, NOW());
 
 
-INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 1);
-INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(2, 1, 4);
-INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 5);
-INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(1, 1, 7);
-INSERT INTO bill_items (cantity, bill_id, product_id) VALUES(3, 2, 6);
+INSERT INTO bill_items (quantity, bill_id, product_id) VALUES(1, 1, 1);
+INSERT INTO bill_items (quantity, bill_id, product_id) VALUES(2, 1, 4);
+INSERT INTO bill_items (quantity, bill_id, product_id) VALUES(1, 1, 5);
+INSERT INTO bill_items (quantity, bill_id, product_id) VALUES(1, 1, 7);
+INSERT INTO bill_items (quantity, bill_id, product_id) VALUES(3, 2, 6);
 
 
 

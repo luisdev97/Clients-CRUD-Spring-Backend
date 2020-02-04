@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -18,10 +19,11 @@ public class ItemBill implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Integer cantity;
+	private Integer quantity;
 	
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"}) 
-	@ManyToOne(fetch= FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
 	private Product product;
 
 	public Long getId() {
@@ -32,16 +34,16 @@ public class ItemBill implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCantity() {
-		return cantity;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setCantity(Integer cantity) {
-		this.cantity = cantity;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 	
 	public Double getAmount() {
-		return cantity.doubleValue() * product.getPrice();
+		return quantity.doubleValue() * product.getPrice();
 	}
 
 	
